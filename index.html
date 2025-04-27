@@ -351,6 +351,20 @@
       background-position: center;
     }
 
+    /* Profile image styles */
+    .profile-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .profile-container:hover .profile-image {
+      transform: scale(1.03);
+    }
+
     /* Responsive improvements */
     @media (max-width: 768px) {
       .container {
@@ -476,8 +490,8 @@
   <section id="hero" class="relative min-h-screen flex items-center pt-20 bg-white overflow-hidden">
     <div class="geometric-pattern pattern-dots absolute top-0 right-0 w-1/2 h-full"></div>
     <div class="container mx-auto px-4 sm:px-6 z-10 relative">
-      <div class="lg:flex lg:items-center lg:justify-between">
-        <div class="lg:w-1/2 mb-12 lg:mb-0 fade-up">
+      <div class="text-center lg:text-left">
+        <div class="max-w-3xl mx-auto lg:mx-0 fade-up">
           <div class="inline-block px-4 py-1 rounded-full bg-blue-100 text-blue-800 font-medium mb-6">
             <span class="flex items-center">
               <span class="w-2 h-2 rounded-full bg-blue-600 mr-2"></span>
@@ -487,10 +501,10 @@
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-gray-900">
             Crafting Digital <span class="primary-text">Experiences</span> That Matter
           </h1>
-          <p class="text-lg sm:text-xl text-gray-600 mb-10 max-w-lg">
+          <p class="text-lg sm:text-xl text-gray-600 mb-10 max-w-2xl mx-auto lg:mx-0">
             I build elegant, intuitive, and high-performance web applications that solve real problems and deliver exceptional user experiences.
           </p>
-          <div class="flex flex-col sm:flex-row gap-4 hero-buttons">
+          <div class="flex flex-col sm:flex-row gap-4 hero-buttons justify-center lg:justify-start">
             <a href="#contact" class="btn-accent flex items-center justify-center group">
               <span>Let's Work Together</span>
               <i class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
@@ -498,15 +512,6 @@
             <a href="#projects" class="btn-secondary flex items-center justify-center">
               <span>Explore My Work</span>
             </a>
-          </div>
-        </div>
-        <div class="lg:w-1/2 relative fade-up stagger-delay-2">
-          <div class="relative z-10 mx-auto max-w-md lg:max-w-full">
-            <div class="absolute -top-10 -left-10 w-24 h-24 bg-blue-100 shape-circle"></div>
-            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-blue-100 shape-circle"></div>
-            <div class="w-full h-64 sm:h-80 md:h-96 bg-gray-200 rounded-2xl flex items-center justify-center">
-              <i class="fas fa-user-circle text-7xl sm:text-8xl md:text-9xl text-gray-400"></i>
-            </div>
           </div>
         </div>
       </div>
@@ -526,10 +531,9 @@
       <div class="lg:flex lg:items-center">
         <div class="lg:w-2/5 mb-12 lg:mb-0 relative fade-up">
           <div class="absolute -top-6 -left-6 w-full h-full border-2 border-blue-600 rounded-2xl hidden sm:block"></div>
-          <div class="rounded-2xl shadow-xl mx-auto relative z-10 overflow-hidden">
-            <div class="w-full h-64 sm:h-80 md:h-96 bg-gray-200 rounded-2xl flex items-center justify-center">
-              <i class="fas fa-user-circle text-7xl sm:text-8xl md:text-9xl text-gray-400"></i>
-            </div>
+          <div class="rounded-2xl shadow-xl mx-auto relative z-10 overflow-hidden profile-container">
+            <!-- Your profile image -->
+            <img src="./WhatsApp Image 2025-01-09 at 18.03.14_66230fee.jpg" alt="Jayasurya - About Me" class="w-full aspect-auto object-cover object-center rounded-2xl">
           </div>
           <div class="absolute -bottom-6 -right-6 w-32 h-32 primary-bg rounded-full opacity-20 hidden sm:block"></div>
         </div>
