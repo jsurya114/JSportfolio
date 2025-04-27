@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <style>
     :root {
       --primary: #2563eb;
@@ -426,6 +427,26 @@
         margin-bottom: 2rem !important;
       }
     }
+
+    .spinner {
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    
+    /* Toast custom styling */
+    .custom-toast {
+      background-color: var(--primary);
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
   </style>
 </head>
 <body>
@@ -833,26 +854,26 @@
             
             <div class="lg:w-3/5 p-6 sm:p-8 md:p-12 bg-white">
               <h3 class="text-2xl font-bold mb-8 text-gray-900">Send Me a Message</h3>
-              <form action="#" class="space-y-6">
+              <form id="contact-form" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Your Name</label>
-                    <input type="text" class="input-field">
+                    <input type="text" name="user_name" class="input-field" required>
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Your Email</label>
-                    <input type="email" class="input-field">
+                    <input type="email" name="user_email" class="input-field" required>
                   </div>
                 </div>
                 
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                  <input type="text" class="input-field">
+                  <input type="text" name="subject" class="input-field" required>
                 </div>
                 
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">Your Message</label>
-                  <textarea rows="5" class="input-field"></textarea>
+                  <textarea rows="5" name="message" class="input-field" required></textarea>
                 </div>
                 
                 <button type="submit" class="btn-accent w-full py-4 flex items-center justify-center group">
@@ -860,6 +881,7 @@
                   <i class="fas fa-paper-plane ml-2 transform group-hover:translate-x-1 transition-transform"></i>
                 </button>
               </form>
+              
             </div>
           </div>
         </div>
@@ -929,6 +951,37 @@
       </div>
     </footer>
   </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("3BaD5oTHs5_9ltN3a"); // Your USER ID here
+  })();
+</script>
+
+  <script>
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+  
+      emailjs.sendForm(
+        'service_89zl7k5', // Your SERVICE ID
+        'template_hz5bfpr', // Your TEMPLATE ID
+        this // `this` means the form
+      )
+      .then(function(response) {
+        console.log('SUCCESS!', response.status, response.text);
+        alert('Message sent successfully!');
+        document.getElementById('contact-form').reset(); // Reset form
+      }, function(error) {
+        console.log('FAILED...', error);
+        alert('Failed to send message. Please try again.');
+      });
+    });
+  </script>
+  
+
 
   <script>
     // Navbar scroll effect
@@ -1013,6 +1066,101 @@
     // Observe all animated elements
     animatedElements.forEach(element => {
       observer.observe(element);
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const messageForm = document.getElementById('contact-form');
+      const sendButtonContainer = document.getElementById('send-button-container');
+      const loadingIndicator = document.getElementById('loading-indicator');
+      const messageHistory = document.getElementById('message-history');
+      const messageList = document.getElementById('message-list');
+      
+      // Function to format date and time
+      function formatDateTime(date) {
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        
+        return `${day}/${month}/${year} at ${hours}:${minutes}`;
+      }
+      
+      // Function to show toast notification
+      function showToast(message, success = true) {
+        Toastify({
+          text: message,
+          duration: 3000,
+          gravity: "bottom",
+          position: "center",
+          className: "custom-toast",
+          style: {
+            background: success ? "#10B981" : "#EF4444",
+            color: "white",
+          },
+          onClick: function(){} // Callback after click
+        }).showToast();
+      }
+      
+      // Function to add message to history
+      function addMessageToHistory(name, email, message, timestamp) {
+        // Show message history section if it's hidden
+        messageHistory.classList.remove('hidden');
+        
+        // Create message element
+        const messageElement = document.createElement('div');
+        messageElement.className = 'bg-gray-50 p-4 rounded-lg border border-gray-200';
+        messageElement.innerHTML = `
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h4 class="font-semibold text-gray-900">${name}</h4>
+              <p class="text-sm text-gray-600">${email}</p>
+            </div>
+            <span class="text-xs text-gray-500">${timestamp}</span>
+          </div>
+          <p class="text-gray-700">${message}</p>
+        `;
+        
+        // Add to message list
+        messageList.prepend(messageElement);
+      }
+      
+      // Handle form submission
+      messageForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Get form values
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+        
+        // Show loading indicator, hide send button
+        sendButtonContainer.classList.add('hidden');
+        loadingIndicator.classList.remove('hidden');
+        
+        // Simulate sending delay (2 seconds)
+        setTimeout(function() {
+          // Hide loading indicator
+          loadingIndicator.classList.add('hidden');
+          sendButtonContainer.classList.remove('hidden');
+          
+          // Get current timestamp
+          const now = new Date();
+          const formattedTime = formatDateTime(now);
+          
+          // Add message to history
+          addMessageToHistory(name, email, message, formattedTime);
+          
+          // Show success notification
+          showToast(`Message sent successfully at ${formattedTime}!`, true);
+          
+          // Reset form
+          messageForm.reset();
+        }, 2000);
+      });
     });
   </script>
 </body>
