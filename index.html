@@ -7,7 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <style>
     :root {
       --primary: #2563eb;
@@ -427,27 +426,26 @@
         margin-bottom: 2rem !important;
       }
     }
-
-    .spinner {
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-    
-    /* Toast custom styling */
-    .custom-toast {
-      background-color: var(--primary);
-      border-radius: 0.5rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
   </style>
+
+
+<style>
+  .toast {
+    @apply bg-green-500 text-white px-6 py-3 rounded-md shadow-lg transform transition-all duration-300 opacity-0 scale-95 pointer-events-auto;
+  }
+  .toast.show {
+    @apply opacity-100 scale-100;
+  }
+  .toast.error {
+    @apply bg-red-500;
+  }
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+  .btn-accent {
+    @apply bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200;
+  }
+</style>
 </head>
 <body>
   <!-- Main content wrapper with consistent spacing -->
@@ -876,9 +874,15 @@
                   <textarea rows="5" name="message" class="input-field" required></textarea>
                 </div>
                 
-                <button type="submit" class="btn-accent w-full py-4 flex items-center justify-center group">
-                  <span>Send Message</span>
+                <button type="submit" id="submit-btn" class="btn-accent w-full py-4 flex items-center justify-center group">
+                  <span id="submit-text">Send Message</span>
                   <i class="fas fa-paper-plane ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                  <div id="loader" class="hidden">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  </div>
                 </button>
               </form>
               
@@ -952,7 +956,7 @@
     </footer>
   </div>
 
-
+  <div id="toast-container" class="fixed bottom-4 inset-x-0 flex justify-center items-center pointer-events-none"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
@@ -961,24 +965,72 @@
   })();
 </script>
 
-  <script>
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-      event.preventDefault(); // Prevent default form submission
-  
-      emailjs.sendForm(
-        'service_89zl7k5', // Your SERVICE ID
-        'template_hz5bfpr', // Your TEMPLATE ID
-        this // `this` means the form
-      )
-      .then(function(response) {
-        console.log('SUCCESS!', response.status, response.text);
-        alert('Message sent successfully!');
-        document.getElementById('contact-form').reset(); // Reset form
-      }, function(error) {
-        console.log('FAILED...', error);
-        alert('Failed to send message. Please try again.');
-      });
+<script>
+  document.getElementById('contact-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+    
+    // Show loader and disable button
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const loader = document.getElementById('loader');
+    
+    submitText.classList.add('hidden');
+    loader.classList.remove('hidden');
+    submitBtn.disabled = true;
+    
+    emailjs.sendForm(
+      'service_89zl7k5', // Your SERVICE ID
+      'template_hz5bfpr', // Your TEMPLATE ID
+      this // `this` means the form
+    )
+    .then(function(response) {
+      console.log('SUCCESS!', response.status, response.text);
+      showToast('Message sent successfully!', 'success');
+      document.getElementById('contact-form').reset(); // Reset form
+    }, function(error) {
+      console.log('FAILED...', error);
+      showToast('Failed to send message. Please try again.', 'error');
+    })
+    .finally(function() {
+      // Hide loader and enable button
+      submitText.classList.remove('hidden');
+      loader.classList.add('hidden');
+      submitBtn.disabled = false;
     });
+  });
+  
+  function showToast(message, type = 'success') {
+    const toastContainer = document.getElementById('toast-container');
+    
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `toast ${type === 'error' ? 'error' : ''}`;
+    toast.innerHTML = `
+      <div class="flex items-center">
+        <span>${message}</span>
+        ${type === 'success' 
+          ? '<svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>'
+          : '<svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>'
+        }
+      </div>
+    `;
+    
+    // Add to container
+    toastContainer.appendChild(toast);
+    
+    // Trigger animation after a small delay
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toastContainer.removeChild(toast);
+      }, 300);
+    }, 3000);
+  }
   </script>
   
 
@@ -1066,101 +1118,6 @@
     // Observe all animated elements
     animatedElements.forEach(element => {
       observer.observe(element);
-    });
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const messageForm = document.getElementById('contact-form');
-      const sendButtonContainer = document.getElementById('send-button-container');
-      const loadingIndicator = document.getElementById('loading-indicator');
-      const messageHistory = document.getElementById('message-history');
-      const messageList = document.getElementById('message-list');
-      
-      // Function to format date and time
-      function formatDateTime(date) {
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        
-        return `${day}/${month}/${year} at ${hours}:${minutes}`;
-      }
-      
-      // Function to show toast notification
-      function showToast(message, success = true) {
-        Toastify({
-          text: message,
-          duration: 3000,
-          gravity: "bottom",
-          position: "center",
-          className: "custom-toast",
-          style: {
-            background: success ? "#10B981" : "#EF4444",
-            color: "white",
-          },
-          onClick: function(){} // Callback after click
-        }).showToast();
-      }
-      
-      // Function to add message to history
-      function addMessageToHistory(name, email, message, timestamp) {
-        // Show message history section if it's hidden
-        messageHistory.classList.remove('hidden');
-        
-        // Create message element
-        const messageElement = document.createElement('div');
-        messageElement.className = 'bg-gray-50 p-4 rounded-lg border border-gray-200';
-        messageElement.innerHTML = `
-          <div class="flex justify-between items-start mb-2">
-            <div>
-              <h4 class="font-semibold text-gray-900">${name}</h4>
-              <p class="text-sm text-gray-600">${email}</p>
-            </div>
-            <span class="text-xs text-gray-500">${timestamp}</span>
-          </div>
-          <p class="text-gray-700">${message}</p>
-        `;
-        
-        // Add to message list
-        messageList.prepend(messageElement);
-      }
-      
-      // Handle form submission
-      messageForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        // Get form values
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const message = document.getElementById('message').value;
-        
-        // Show loading indicator, hide send button
-        sendButtonContainer.classList.add('hidden');
-        loadingIndicator.classList.remove('hidden');
-        
-        // Simulate sending delay (2 seconds)
-        setTimeout(function() {
-          // Hide loading indicator
-          loadingIndicator.classList.add('hidden');
-          sendButtonContainer.classList.remove('hidden');
-          
-          // Get current timestamp
-          const now = new Date();
-          const formattedTime = formatDateTime(now);
-          
-          // Add message to history
-          addMessageToHistory(name, email, message, formattedTime);
-          
-          // Show success notification
-          showToast(`Message sent successfully at ${formattedTime}!`, true);
-          
-          // Reset form
-          messageForm.reset();
-        }, 2000);
-      });
     });
   </script>
 </body>
