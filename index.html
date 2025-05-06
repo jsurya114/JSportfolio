@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Creative Portfolio</title>
+  <title>JS</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -114,7 +114,7 @@
       color: var(--light-text-muted);
     }
     
-    /* Preloader */
+    /* Enhanced Preloader */
     .preloader {
       position: fixed;
       top: 0;
@@ -136,73 +136,96 @@
       visibility: hidden;
     }
     
+    /* Refined Loader Animation */
     .loader-container {
       position: relative;
       width: 150px;
       height: 150px;
       margin-bottom: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     
-    .loader-circle {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    .spinner {
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       border: 4px solid transparent;
       border-top-color: var(--primary-color);
+      border-left-color: var(--primary-color);
+      animation: spin 1s linear infinite;
+    }
+    
+    .spinner-inner {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 4px solid transparent;
+      border-top-color: var(--accent-color);
+      border-right-color: var(--accent-color);
+      animation: spin 1.5s linear infinite reverse;
+    }
+    
+    .spinner-center {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 4px solid transparent;
+      border-bottom-color: var(--secondary-color);
+      border-left-color: var(--secondary-color);
       animation: spin 2s linear infinite;
     }
     
-    .loader-circle:nth-child(2) {
-      border-top-color: transparent;
-      border-right-color: var(--primary-color);
-      animation: spin 2.5s linear infinite;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
     
-    .loader-circle:nth-child(3) {
-      border-top-color: transparent;
-      border-right-color: transparent;
-      border-bottom-color: var(--primary-color);
-      animation: spin 3s linear infinite;
+    .loader-progress {
+      position: relative;
+      width: 200px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    
+    .loader-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary-color), #60A5FA);
+      animation: progress 2s ease-in-out forwards;
+    }
+    
+    @keyframes progress {
+      0% { width: 0%; }
+      100% { width: 100%; }
     }
     
     .loader-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      margin-top: 15px;
       font-size: 1.2rem;
       font-weight: 600;
       color: var(--primary-color);
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
     
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-    
-    .typing-text {
-      display: inline-block;
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: 3px solid var(--primary-color);
-      animation: typing 3.5s steps(30, end), blink-caret 0.75s step-end infinite;
-      font-size: 2rem;
-      font-weight: 600;
+    /* Enhanced Name Display */
+    .name-text {
+      font-weight: 700;
       color: var(--primary-color);
-    }
-    
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: var(--primary-color) }
+      background: linear-gradient(90deg, var(--primary-color), #60A5FA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block; /* Changed from inline to inline-block for better text handling */
+      white-space: nowrap; /* Prevent name from breaking to new line */
     }
     
     /* Theme Toggle */
@@ -274,28 +297,80 @@
       transform: scale(1);
     }
     
-    /* Navigation */
+    /* Enhanced Navigation */
+    .nav-container {
+      background-color: var(--card-bg);
+      border-radius: 50px;
+      padding: 0.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: inline-flex;
+      margin: 0 auto;
+    }
+    
     .nav-link {
       position: relative;
-      transition: color 0.3s var(--transition-ease);
+      transition: all 0.3s var(--transition-ease);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 50px;
+      min-width: 2.5rem;
+      justify-content: center;
+      overflow: hidden;
     }
     
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -2px;
-      left: 0;
+    .nav-link:hover {
+      background-color: rgba(59, 130, 246, 0.1);
+      padding: 0.75rem 1.25rem;
+    }
+    
+    .nav-link.active {
       background-color: var(--primary-color);
-      transition: width 0.3s var(--transition-ease);
+      color: white;
+      padding: 0.75rem 1.25rem;
     }
     
-    .nav-link:hover::after {
-      width: 100%;
+    .nav-icon {
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
     }
     
-    /* Buttons */
+    .nav-text {
+      max-width: 0;
+      opacity: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover .nav-text,
+    .nav-link.active .nav-text {
+      max-width: 100px;
+      opacity: 1;
+      margin-left: 0.5rem;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .nav-link {
+        padding: 0.75rem;
+      }
+      
+      .nav-link:hover,
+      .nav-link.active {
+        padding: 0.75rem;
+      }
+      
+      .nav-link:hover .nav-text,
+      .nav-link.active .nav-text {
+        max-width: 0;
+        opacity: 0;
+        margin-left: 0;
+      }
+    }
+    
+    /* Enhanced Buttons */
     .btn-primary {
       position: relative;
       overflow: hidden;
@@ -341,11 +416,13 @@
       width: 100%;
     }
     
-    /* Cards */
+    /* Enhanced Project Cards */
     .project-card {
       transition: all 0.5s var(--transition-ease);
       transform-style: preserve-3d;
       backface-visibility: hidden;
+      position: relative;
+      overflow: hidden;
     }
     
     .project-card:hover {
@@ -360,7 +437,24 @@
       transform: scale(1.05);
     }
     
-    /* Skill Orbs */
+    .project-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), #60A5FA);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    
+    .project-card:hover::after {
+      transform: scaleX(1);
+    }
+    
+    /* Enhanced Skill Orbs */
     .skill-orb {
       position: relative;
       width: 120px;
@@ -374,10 +468,12 @@
       justify-content: center;
       transition: all 0.5s var(--transition-ease);
       overflow: hidden;
+      transform-style: preserve-3d; /* Added for 3D effect */
+      perspective: 1000px; /* Added for 3D effect */
     }
     
     .skill-orb:hover {
-      transform: translateY(-15px) scale(1.1);
+      transform: translateY(-15px) scale(1.1) rotate(360deg); /* Added rotation effect */
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
     }
     
@@ -410,7 +506,7 @@
     
     .skill-orb:hover i {
       color: white;
-      transform: scale(1.2);
+      transform: scale(1.2) rotateY(360deg); /* Added rotateY for icon rotation */
     }
     
     .skill-orb .skill-name {
@@ -644,7 +740,7 @@
       transform: rotate(-45deg) translateY(6px) translateX(-6px);
     }
     
-    /* Scroll Progress */
+    /* Enhanced Scroll Progress */
     .scroll-progress {
       position: fixed;
       top: 0;
@@ -656,7 +752,7 @@
       transition: width 0.1s var(--transition-ease);
     }
     
-    /* Particles */
+    /* Enhanced Particles */
     .particles {
       position: fixed;
       top: 0;
@@ -688,25 +784,117 @@
       color: var(--primary-color);
     }
     
-    /* Footer styles */
-    footer {
-      transition: background-color 0.5s var(--transition-ease);
+    /* New Footer Design */
+    .footer-new {
+      position: relative;
+      background-color: var(--card-bg);
+      overflow: hidden;
     }
     
-    .dark-mode footer {
-      background-color: var(--darker-bg);
+    .footer-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(59, 130, 246, 0.1) 2px, transparent 2px);
+      background-size: 30px 30px;
+      opacity: 0.5;
+      z-index: 0;
     }
     
-    .light-mode footer {
-      background-color: #EDF2F7;
+    .footer-content {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 0;
     }
     
-    .light-mode footer a {
-      color: var(--light-text-muted);
-    }
-    
-    .light-mode footer a:hover {
+    .footer-logo {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      font-weight: 700;
       color: var(--primary-color);
+    }
+    
+    .footer-tagline {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      max-width: 400px;
+    }
+    
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+      margin: 2rem 0;
+    }
+    
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-nav-item:hover {
+      color: var(--primary-color);
+      transform: translateX(5px);
+    }
+    
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(59, 130, 246, 0.1);
+      color: var(--primary-color);
+      transition: all 0.3s ease;
+    }
+    
+    .social-btn:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-5px);
+    }
+    
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .professional-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(90deg, var(--primary-color), #60A5FA);
+      color: white;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+    
+    .footer-copyright {
+      font-size: 0.9rem;
+      color: var(--text-color-muted);
     }
     
     /* Media Queries */
@@ -736,6 +924,15 @@
       
       .flex-col-md\:flex-row {
         flex-direction: column;
+      }
+      
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .footer-nav {
+        justify-content: center;
       }
     }
     
@@ -783,7 +980,7 @@
         padding-right: 0.75rem;
       }
       
-      .typing-text {
+      .name-text {
         font-size: 1.5rem;
       }
     }
@@ -817,21 +1014,53 @@
     .flex-wrap {
       flex-wrap: wrap;
     }
+    
+    /* Image hover effects */
+    .img-hover-zoom {
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .img-hover-zoom img {
+      transition: transform 0.5s ease;
+    }
+    
+    .img-hover-zoom:hover img {
+      transform: scale(1.1);
+    }
+    
+    .img-hover-zoom::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .img-hover-zoom:hover::before {
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="dark-mode">
   <!-- Scroll Progress Bar -->
   <div class="scroll-progress"></div>
   
-  <!-- Preloader -->
+  <!-- Enhanced Preloader -->
   <div class="preloader">
     <div class="loader-container">
-      <div class="loader-circle"></div>
-      <div class="loader-circle"></div>
-      <div class="loader-circle"></div>
-      <div class="loader-text">Loading</div>
+      <div class="spinner"></div>
+      <div class="spinner-inner"></div>
+      <div class="spinner-center"></div>
     </div>
-    
+    <div class="loader-progress">
+      <div class="loader-bar"></div>
+    </div>
+    <div class="loader-text">LOADING</div>
   </div>
   
   <!-- Theme Toggle -->
@@ -842,21 +1071,38 @@
   <!-- Particles Background -->
   <div class="particles" id="particles"></div>
   
-  <!-- Header -->
+  <!-- Enhanced Header with Distinct Navigation Section -->
   <header class="fixed w-full shadow-md z-50 transition-colors duration-300" style="backdrop-filter: blur(10px);">
     <div class="container mx-auto px-6 py-4">
       <div class="flex justify-between items-center">
-        <a href="#" class="text-2xl font-bold text-blue-500">Portfolio<span class="text-blue-400">.</span></a>
-        
-        <!-- Desktop Navigation -->
-        <nav class="hidden md:flex space-x-10">
-          <a href="#home" class="nav-link hover:text-blue-500 transition-colors duration-300">Home</a>
-          <a href="#about" class="nav-link hover:text-blue-500 transition-colors duration-300">About</a>
-          <a href="#projects" class="nav-link hover:text-blue-500 transition-colors duration-300">Projects</a>
-          <a href="#skills" class="nav-link hover:text-blue-500 transition-colors duration-300">Skills</a>
-          <a href="#contact" class="nav-link hover:text-blue-500 transition-colors duration-300">Contact</a>
-        </nav>
-        
+        <a href="#" class="text-2xl font-bold text-blue-500">J<span class="text-blue-400">S</span></a>
+      
+        <!-- Desktop Navigation with Hover Effect -->
+        <div class="hidden md:flex justify-center">
+          <div class="nav-container">
+            <a href="#home" class="nav-link hover:text-blue-500 transition-colors duration-300">
+              <i class="fas fa-home nav-icon"></i>
+              <span class="nav-text">Home</span>
+            </a>
+            <a href="#about" class="nav-link hover:text-blue-500 transition-colors duration-300">
+              <i class="fas fa-user nav-icon"></i>
+              <span class="nav-text">Home</span>
+            </a>
+            <a href="#projects" class="nav-link hover:text-blue-500 transition-colors duration-300">
+              <i class="fas fa-briefcase nav-icon"></i>
+              <span class="nav-text">Projects</span>
+            </a>
+            <a href="#skills" class="nav-link hover:text-blue-500 transition-colors duration-300">
+              <i class="fas fa-cogs nav-icon"></i>
+              <span class="nav-text">Skills</span>
+            </a>
+            <a href="#contact" class="nav-link hover:text-blue-500 transition-colors duration-300">
+              <i class="fas fa-envelope nav-icon"></i>
+              <span class="nav-text">Contact</span>
+            </a>
+          </div>
+        </div>
+      
         <!-- Mobile Menu Button -->
         <button id="menu-btn" class="hamburger md:hidden focus:outline-none">
           <span class="hamburger-top"></span>
@@ -865,15 +1111,30 @@
         </button>
       </div>
     </div>
-    
+  
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden md:hidden w-full">
       <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
-        <a href="#home" class="hover:text-blue-500 transition-colors duration-300">Home</a>
-        <a href="#about" class="hover:text-blue-500 transition-colors duration-300">About</a>
-        <a href="#projects" class="hover:text-blue-500 transition-colors duration-300">Projects</a>
-        <a href="#skills" class="hover:text-blue-500 transition-colors duration-300">Skills</a>
-        <a href="#contact" class="hover:text-blue-500 transition-colors duration-300">Contact</a>
+        <a href="#home" class="hover:text-blue-500 transition-colors duration-300 flex items-center gap-2">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+        <a href="#about" class="hover:text-blue-500 transition-colors duration-300 flex items-center gap-2">
+          <i class="fas fa-user"></i>
+          <span>About</span>
+        </a>
+        <a href="#projects" class="hover:text-blue-500 transition-colors duration-300 flex items-center gap-2">
+          <i class="fas fa-briefcase"></i>
+          <span>Projects</span>
+        </a>
+        <a href="#skills" class="hover:text-blue-500 transition-colors duration-300 flex items-center gap-2">
+          <i class="fas fa-cogs"></i>
+          <span>Skills</span>
+        </a>
+        <a href="#contact" class="hover:text-blue-500 transition-colors duration-300 flex items-center gap-2">
+          <i class="fas fa-envelope"></i>
+          <span>Contact</span>
+        </a>
       </div>
     </div>
   </header>
@@ -883,8 +1144,8 @@
     <div class="container mx-auto px-6 py-20">
       <div class="flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 slide-in-left">
-          <h1 class="text-4xl md:text-6xl font-bold mb-4">Hi, I'm <span class="text-blue-500 name-text"></span></h1>
-          <h2 class="text-2xl md:text-3xl font-semibold mb-6">Web Developer & Designer</h2>
+          <h1 class="text-4xl md:text-6xl font-bold mb-4">Hi, I'm <span class="name-text">Jayasoorya S</span></h1>
+          <h2 class="text-2xl md:text-3xl font-semibold mb-6">Full-Stack Developer & Designer</h2>
           <p class="mb-8 text-lg">I create beautiful, functional websites with a focus on user experience and modern design principles.</p>
           <div class="flex flex-wrap gap-4">
             <a href="#projects" class="btn-primary bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full font-medium transform hover:-translate-y-1 transition-all duration-300">View My Work</a>
@@ -893,14 +1154,10 @@
         </div>
         <div class="md:w-1/2 mt-12 md:mt-0 slide-in-right">
           <div class="relative">
-            <div class="w-64 h-64 md:w-80 md:h-80 rounded-full mx-auto overflow-hidden border-4 border-gray-700 shadow-xl">
-              <img src="/placeholder.svg?height=320&width=320" alt="Profile" class="w-full h-full object-cover">
+            <div class="w-64 h-64 md:w-80 md:h-80 rounded-full mx-auto overflow-hidden border-4 border-gray-700 shadow-xl img-hover-zoom">
+              <img src="/WhatsApp Image 2025-01-09 at 18.03.14_66230fee.jpg" alt="Profile" class="w-full h-full object-cover">
             </div>
-            <div class="absolute -bottom-4 -right-4 rounded-full p-4 shadow-lg">
-              <div class="bg-blue-600 rounded-full w-16 h-16 flex items-center justify-center">
-                <i class="fas fa-code text-white text-2xl"></i>
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -917,7 +1174,9 @@
       
       <div class="flex flex-col md:flex-row items-center">
         <div class="md:w-1/2 slide-in-left">
-          <img src="/placeholder.svg?height=400&width=500" alt="About Me" class="rounded-lg shadow-xl mx-auto">
+          <div class="img-hover-zoom rounded-lg shadow-xl overflow-hidden">
+            <img src="/WhatsApp Image 2025-01-09 at 18.03.14_66230fee.jpg" alt="About Me" class="w-full h-full object-cover">
+          </div>
         </div>
         <div class="md:w-1/2 mt-10 md:mt-0 md:pl-10 slide-in-right">
           <h3 class="text-2xl font-semibold mb-4">Who am I?</h3>
@@ -994,7 +1253,7 @@
         <!-- Project 1 -->
         <div class="project-card rounded-lg overflow-hidden shadow-lg slide-in-left" style="animation-delay: 0.1s;">
           <div class="relative overflow-hidden">
-            <img src="/placeholder.svg?height=250&width=400" alt="Project 1" class="w-full h-48 object-cover">
+            <img src="https://source.unsplash.com/random/400x250/?ecommerce" alt="Project 1" class="w-full h-48 object-cover">
             <div class="absolute inset-0 bg-blue-600 bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <a href="#" class="bg-gray-800 text-blue-500 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition-colors duration-300">View Project</a>
             </div>
@@ -1013,7 +1272,7 @@
         <!-- Project 2 -->
         <div class="project-card rounded-lg overflow-hidden shadow-lg fade-in" style="animation-delay: 0.2s;">
           <div class="relative overflow-hidden">
-            <img src="/placeholder.svg?height=250&width=400" alt="Project 2" class="w-full h-48 object-cover">
+            <img src="https://source.unsplash.com/random/400x250/?portfolio" alt="Project 2" class="w-full h-48 object-cover">
             <div class="absolute inset-0 bg-blue-600 bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <a href="#" class="bg-gray-800 text-blue-500 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition-colors duration-300">View Project</a>
             </div>
@@ -1032,7 +1291,7 @@
         <!-- Project 3 -->
         <div class="project-card rounded-lg overflow-hidden shadow-lg slide-in-right" style="animation-delay: 0.3s;">
           <div class="relative overflow-hidden">
-            <img src="/placeholder.svg?height=250&width=400" alt="Project 3" class="w-full h-48 object-cover">
+            <img src="https://source.unsplash.com/random/400x250/?dashboard" alt="Project 3" class="w-full h-48 object-cover">
             <div class="absolute inset-0 bg-blue-600 bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <a href="#" class="bg-gray-800 text-blue-500 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition-colors duration-300">View Project</a>
             </div>
@@ -1051,7 +1310,7 @@
         <!-- Project 4 -->
         <div class="project-card rounded-lg overflow-hidden shadow-lg slide-in-left" style="animation-delay: 0.4s;">
           <div class="relative overflow-hidden">
-            <img src="/placeholder.svg?height=250&width=400" alt="Project 4" class="w-full h-48 object-cover">
+            <img src="https://source.unsplash.com/random/400x250/?weather" alt="Project 4" class="w-full h-48 object-cover">
             <div class="absolute inset-0 bg-blue-600 bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <a href="#" class="bg-gray-800 text-blue-500 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition-colors duration-300">View Project</a>
             </div>
@@ -1070,7 +1329,7 @@
         <!-- Project 5 -->
         <div class="project-card rounded-lg overflow-hidden shadow-lg fade-in" style="animation-delay: 0.5s;">
           <div class="relative overflow-hidden">
-            <img src="/placeholder.svg?height=250&width=400" alt="Project 5" class="w-full h-48 object-cover">
+            <img src="https://source.unsplash.com/random/400x250/?restaurant" alt="Project 5" class="w-full h-48 object-cover">
             <div class="absolute inset-0 bg-blue-600 bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <a href="#" class="bg-gray-800 text-blue-500 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition-colors duration-300">View Project</a>
             </div>
@@ -1089,7 +1348,7 @@
         <!-- Project 6 -->
         <div class="project-card rounded-lg overflow-hidden shadow-lg slide-in-right" style="animation-delay: 0.6s;">
           <div class="relative overflow-hidden">
-            <img src="/placeholder.svg?height=250&width=400" alt="Project 6" class="w-full h-48 object-cover">
+            <img src="https://source.unsplash.com/random/400x250/?tasks" alt="Project 6" class="w-full h-48 object-cover">
             <div class="absolute inset-0 bg-blue-600 bg-opacity-20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <a href="#" class="bg-gray-800 text-blue-500 px-4 py-2 rounded-full font-medium hover:bg-blue-600 hover:text-white transition-colors duration-300">View Project</a>
             </div>
@@ -1112,7 +1371,7 @@
     </div>
   </section>
 
-  <!-- Skills Section -->
+  <!-- Updated Skills Section -->
   <section id="skills" class="py-20">
     <div class="container mx-auto px-6">
       <div class="text-center mb-16 scale-in">
@@ -1146,15 +1405,26 @@
             <i class="fab fa-node-js text-green-500"></i>
             <span class="skill-name">Node.js</span>
           </div>
+          <!-- Added MongoDB -->
           <div class="skill-orb" style="animation-delay: 0.6s;">
-            <i class="fab fa-sass text-pink-500"></i>
-            <span class="skill-name">Sass</span>
+            <i class="fas fa-database text-green-600"></i>
+            <span class="skill-name">MongoDB</span>
           </div>
+          <!-- Added Tailwind CSS -->
           <div class="skill-orb" style="animation-delay: 0.7s;">
+            <i class="fab fa-css3 text-blue-400"></i>
+            <span class="skill-name">Tailwind CSS</span>
+          </div>
+          <!-- Added DSA -->
+          <div class="skill-orb" style="animation-delay: 0.8s;">
+            <i class="fas fa-code-branch text-purple-500"></i>
+            <span class="skill-name">DSA</span>
+          </div>
+          <div class="skill-orb" style="animation-delay: 0.9s;">
             <i class="fas fa-mobile-alt text-blue-500"></i>
             <span class="skill-name">Responsive</span>
           </div>
-          <div class="skill-orb" style="animation-delay: 0.8s;">
+          <div class="skill-orb" style="animation-delay: 1.0s;">
             <i class="fab fa-git-alt text-red-500"></i>
             <span class="skill-name">Git</span>
           </div>
@@ -1339,25 +1609,71 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="py-10">
+  <!-- New Footer Design -->
+  <footer class="footer-new">
+    <div class="footer-pattern"></div>
     <div class="container mx-auto px-6">
-      <div class="flex flex-col md:flex-row justify-between items-center">
-        <div class="mb-6 md:mb-0">
-          <a href="#" class="text-2xl font-bold text-blue-500">Portfolio<span class="text-blue-400">.</span></a>
+      <div class="footer-content">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <!-- Column 1: About -->
+          <div class="md:col-span-1">
+            <a href="#" class="footer-logo">J<span class="text-blue-400">S</span></a>
+            <div class="professional-badge">
+              <i class="fas fa-laptop-code"></i>
+              <span>Full-Stack Developer</span>
+            </div>
+            <p class="footer-tagline mt-4">Creating innovative digital experiences with clean code and modern design principles.</p>
+            <div class="footer-social mt-6">
+              <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="social-btn"><i class="fab fa-github"></i></a>
+            </div>
+          </div>
+          
+          <!-- Column 2: Quick Links -->
+          <div class="md:col-span-1">
+            <h3 class="text-xl font-bold mb-6">Quick Links</h3>
+            <div class="space-y-3">
+              <a href="#home" class="footer-nav-item"><i class="fas fa-chevron-right text-blue-500"></i> Home</a>
+              <a href="#about" class="footer-nav-item"><i class="fas fa-chevron-right text-blue-500"></i> About</a>
+              <a href="#projects" class="footer-nav-item"><i class="fas fa-chevron-right text-blue-500"></i> Projects</a>
+              <a href="#skills" class="footer-nav-item"><i class="fas fa-chevron-right text-blue-500"></i> Skills</a>
+              <a href="#contact" class="footer-nav-item"><i class="fas fa-chevron-right text-blue-500"></i> Contact</a>
+            </div>
+          </div>
+          
+          <!-- Column 3: Contact Info -->
+          <div class="md:col-span-1">
+            <h3 class="text-xl font-bold mb-6">Contact Info</h3>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <i class="fas fa-map-marker-alt text-blue-500 mt-1 mr-3"></i>
+                <p>123 Developer Street, San Francisco, CA 94107, USA</p>
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-envelope text-blue-500 mt-1 mr-3"></i>
+                <p>hello@example.com</p>
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-phone-alt text-blue-500 mt-1 mr-3"></i>
+                <p>+1 (123) 456-7890</p>
+              </div>
+              <div class="flex items-start">
+                <i class="fas fa-globe text-blue-500 mt-1 mr-3"></i>
+                <p>www.yourportfolio.com</p>
+              </div>
+            </div>
+          </div>
         </div>
         
-        <div class="flex flex-wrap justify-center gap-6">
-          <a href="#home" class="hover:text-blue-500 transition-colors duration-300">Home</a>
-          <a href="#about" class="hover:text-blue-500 transition-colors duration-300">About</a>
-          <a href="#projects" class="hover:text-blue-500 transition-colors duration-300">Projects</a>
-          <a href="#skills" class="hover:text-blue-500 transition-colors duration-300">Skills</a>
-          <a href="#contact" class="hover:text-blue-500 transition-colors duration-300">Contact</a>
+        <div class="footer-divider my-8"></div>
+        
+        <div class="footer-bottom">
+          <p class="footer-copyright">&copy; 2023 My Portfolio. All rights reserved.</p>
+          <p>Designed with <i class="fas fa-heart text-red-500"></i> by Jayasoorya S</p>
         </div>
-      </div>
-      
-      <div class="border-t border-gray-700 mt-8 pt-8 text-center">
-        <p>&copy; 2023 My Portfolio. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -1456,10 +1772,8 @@
         }
       });
       
-      // Preloader
+      // Enhanced Preloader
       const preloader = document.querySelector('.preloader');
-      const nameText = document.querySelector('.name-text');
-      const name = "Jayasoorya S";
       
       // Initialize variables to track preloader state
       let preloaderRemoved = false;
@@ -1472,17 +1786,6 @@
             preloader.style.display = 'none';
             document.body.style.overflow = 'auto';
             preloaderRemoved = true;
-            
-            // Start typing effect for name
-            let i = 0;
-            const typeWriter = () => {
-              if (i < name.length) {
-                nameText.textContent += name.charAt(i);
-                i++;
-                setTimeout(typeWriter, 150);
-              }
-            };
-            typeWriter();
             
             // Trigger animation check after preloader is removed
             checkIfInView();
@@ -1648,6 +1951,57 @@
         } else {
           header.classList.remove('shadow-md');
         }
+      });
+      
+      // Random images for project cards
+      function loadRandomImages() {
+        const projectImages = document.querySelectorAll('.project-card img');
+        const categories = ['ecommerce', 'portfolio', 'dashboard', 'weather', 'restaurant', 'tasks'];
+        
+        projectImages.forEach((img, index) => {
+          const category = categories[index % categories.length];
+          const randomNum = Math.floor(Math.random() * 1000);
+          img.src = `https://source.unsplash.com/random/400x250/?${category}&sig=${randomNum}`;
+        });
+      }
+      
+      // Load random images
+      loadRandomImages();
+      
+      // Add floating animation to CSS
+      const styleSheet = document.styleSheets[0];
+      styleSheet.insertRule(`
+        @keyframes float {
+          0% { transform: translateY(0) translateX(0); }
+          25% { transform: translateY(-20px) translateX(10px); }
+          50% { transform: translateY(0) translateX(20px); }
+          75% { transform: translateY(20px) translateX(10px); }
+          100% { transform: translateY(0) translateX(0); }
+        }
+      `, styleSheet.cssRules.length);
+      
+      // Active navigation link
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
+      
+      window.addEventListener('scroll', () => {
+        let current = '';
+        
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          
+          if (pageYOffset >= (sectionTop - 200)) {
+            current = section.getAttribute('id');
+          }
+        });
+        
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+          }
+        });
       });
     });
   </script>
